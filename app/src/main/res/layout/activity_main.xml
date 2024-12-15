@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="412dp"
+    android:layout_height="917dp"
+    android:background="#FFFFFF">
+
+    <!-- Header Line -->
+    <View
+        android:id="@+id/lineHeader"
+        android:layout_width="380dp"
+        android:layout_height="1dp"
+        android:background="#000000"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="90dp" />
+
+    <!-- Title: AI Wiz🧙‍♂️🪄 -->
+
+    <!-- Photo Search Image -->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/jolly_lodger"
+        android:text="@string/ai_wiz"
+        android:textColor="#0F4615"
+        android:textSize="48sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imgPhotoSearch"
+        android:layout_width="148dp"
+        android:layout_height="148dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="29dp"
+        android:src="@drawable/search"
+        app:layout_constraintTop_toTopOf="@id/lineHeader"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Likes Image -->
+    <ImageView
+        android:id="@+id/imgLikes"
+        android:layout_width="148dp"
+        android:layout_height="148dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="230dp"
+        android:src="@drawable/heart"
+        app:layout_constraintTop_toTopOf="@id/lineHeader"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <!-- Likes Label -->
+
+    <!-- AI Image Generate Label -->
+
+    <TextView
+        android:id="@+id/labelPhotoSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/jolly_lodger"
+        android:text="Search"
+        android:textColor="#000000"
+        android:textSize="32sp"
+        app:layout_constraintStart_toStartOf="@id/imgPhotoSearch"
+        app:layout_constraintTop_toBottomOf="@id/imgPhotoSearch" />
+
+    <TextView
+        android:id="@+id/labelLikes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/jolly_lodger"
+        android:text="Likes"
+        android:textColor="#000000"
+        android:textSize="32sp"
+        app:layout_constraintStart_toStartOf="@id/imgLikes"
+        app:layout_constraintTop_toBottomOf="@id/imgLikes" />
+
+    <ImageView
+        android:id="@+id/imgAIImageGenerate"
+        android:layout_width="148dp"
+        android:layout_height="148dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/create"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/labelPhotoSearch" />
+
+    <!-- ai image list Image -->
+    <ImageView
+        android:id="@+id/aiImageList"
+        android:layout_width="148dp"
+        android:layout_height="148dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="230dp"
+        android:src="@drawable/gallary"
+        app:layout_constraintTop_toTopOf="@id/labelLikes"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <TextView
+        android:id="@+id/labelAIImageGenerate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/jolly_lodger"
+        android:text="Ai image"
+        android:textColor="#000000"
+        android:textSize="32sp"
+        app:layout_constraintStart_toStartOf="@id/imgAIImageGenerate"
+        app:layout_constraintTop_toBottomOf="@id/imgAIImageGenerate" />
+
+    <TextView
+        android:id="@+id/labelAiList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/jolly_lodger"
+        android:text="AiList"
+        android:textColor="#000000"
+        android:textSize="32sp"
+        app:layout_constraintStart_toStartOf="@id/aiImageList"
+        app:layout_constraintTop_toBottomOf="@id/aiImageList" />
+
+    <ImageView
+        android:id="@+id/aiVideo"
+        android:layout_width="148dp"
+        android:layout_height="148dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/play"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/labelAIImageGenerate" />
+
+
+    <!-- Help Image -->
+
+    <!-- Help Label -->
+
+    <TextView
+        android:id="@+id/labelAiVideo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/jolly_lodger"
+        android:text="Ai video"
+        android:textColor="#000000"
+        android:textSize="32sp"
+        app:layout_constraintStart_toStartOf="@id/aiVideo"
+        app:layout_constraintTop_toBottomOf="@id/aiVideo" />
+
+    <ImageView
+        android:id="@+id/imgHelp"
+        android:layout_width="148dp"
+        android:layout_height="148dp"
+        android:layout_marginStart="228dp"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/help"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/labelAiList" />
+
+    <TextView
+        android:id="@+id/labelHelp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/jolly_lodger"
+        android:text="Help"
+        android:textColor="#000000"
+        android:textSize="32sp"
+        app:layout_constraintStart_toStartOf="@id/imgHelp"
+        app:layout_constraintTop_toBottomOf="@id/imgHelp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
