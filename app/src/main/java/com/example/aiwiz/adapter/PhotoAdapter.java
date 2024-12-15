@@ -1,4 +1,4 @@
-package com.example.aiwiz;
+package com.example.aiwiz.adapter;
 
 // PhotoAdapter.java
 
@@ -13,13 +13,19 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.aiwiz.LikedPhoto;
+import com.example.aiwiz.Photo;
+import com.example.aiwiz.R;
+import com.example.aiwiz.activity.LikedPhotosActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHolder> {
     private Context mContext;
     private List<Photo> photoList;
     private OnItemClickListener listener;
+
 
     public interface OnItemClickListener {
         void onItemClick(Photo position);

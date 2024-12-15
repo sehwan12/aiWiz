@@ -29,20 +29,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="end"
+            android:gravity="center"
             android:paddingTop="16dp">
 
-            <Button
+            <ImageButton
                 android:id="@+id/downloadButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="다운로드" />
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/download"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                />
 
-            <Button
+            <ImageButton
                 android:id="@+id/likeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="♡"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/heartlinear"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:layout_marginStart="16dp" />
 
         </LinearLayout>

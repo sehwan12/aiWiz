@@ -1,11 +1,13 @@
-package com.example.aiwiz;
+package com.example.aiwiz.activity;
 
 // PhotoSearchActivity.java
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -20,6 +22,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.aiwiz.BuildConfig;
+import com.example.aiwiz.Photo;
+import com.example.aiwiz.R;
+import com.example.aiwiz.SearchResponse;
+import com.example.aiwiz.UnsplashApi;
+import com.example.aiwiz.adapter.PhotoAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +38,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class PhotoSearchActivity extends AppCompatActivity implements PhotoAdapter.OnItemClickListener {
 
     private EditText searchEditText;
-    private Button searchButton;
     private RecyclerView recyclerView;
     private PhotoAdapter photoAdapter;
     private List<Photo> photoList;
@@ -43,13 +51,13 @@ public class PhotoSearchActivity extends AppCompatActivity implements PhotoAdapt
     private String currentQuery = null; // 현재 검색어
     private final int TOTAL_PAGES = 30; // 예시: 최대 페이지 수 설정 (Unsplash API 제한에 따라 조정)
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_search); // Figma에서 제공하는 XML 파일로 교체
 
         searchEditText = findViewById(R.id.searchEditText); // XML의 EditText ID
-        searchButton = findViewById(R.id.searchButton); // XML의 Button ID
         recyclerView = findViewById(R.id.recyclerView); // XML의 RecyclerView ID
         progressBar = findViewById(R.id.progressBar); // XML의 ProgressBar ID
 
@@ -60,6 +68,7 @@ public class PhotoSearchActivity extends AppCompatActivity implements PhotoAdapt
         recyclerView.setAdapter(photoAdapter);
         recyclerView.setHasFixedSize(true);
 
+
         // Retrofit 초기화
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.unsplash.com/")
@@ -69,18 +78,34 @@ public class PhotoSearchActivity extends AppCompatActivity implements PhotoAdapt
         unsplashApi = retrofit.create(UnsplashApi.class);
 
         loadRandomPhotos();
-        // 검색 버튼 클릭 이벤트
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        searchEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                String query = searchEditText.getText().toString().trim();
-                if (!TextUtils.isEmpty(query)) {
-                    searchPhotos(query);
-                } else {
-                    Toast.makeText(PhotoSearchActivity.this, "검색어를 입력해주세요.", Toast.LENGTH_SHORT).show();
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    Drawable drawable = searchEditText.getCompoundDrawables()[2]; // Right drawable
+                    if (drawable != null) {
+                        int drawableWidth = drawable.getBounds().width();
+                        int drawableHeight = drawable.getBounds().height();
+
+                        // Get touch coordinates
+                        float touchX = event.getX();
+                        float touchY = event.getY();
+
+                        // Get the width and height of the EditText
+                        int width = searchEditText.getWidth();
+                        int height = searchEditText.getHeight();
+                        String query = searchEditText.getText().toString().trim();
+                        // Calculate the area where the drawable is located
+                        if (touchX >= (width - searchEditText.getPaddingRight() - drawableWidth)) {
+                            searchPhotos(query);
+                            return true; // 이벤트 소비
+                        }
+                    }
                 }
+                return false; // 이벤트 계속 전달
             }
         });
+
 
         // EditText의 엔터 키(검색 액션) 리스너 설정
         searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -110,7 +135,7 @@ public class PhotoSearchActivity extends AppCompatActivity implements PhotoAdapt
                     if (!isLoading && !isLastPage) {
                         if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
                                 && firstVisibleItemPosition >= 0
-                                && totalItemCount >= 30) { // per_page 설정과 일치
+                                && totalItemCount >= TOTAL_PAGES) { // per_page 설정과 일치
                             loadMorePhotos();
                         }
                     }
@@ -151,14 +176,7 @@ public class PhotoSearchActivity extends AppCompatActivity implements PhotoAdapt
         });
     }
 
-//    @Override
-//    public void onItemClick(int position) {
-//        // 사진 클릭 시 상세 페이지로 이동하거나, 다른 동작을 수행할 수 있습니다.
-//        Photo clickedPhoto = photoList.get(position);
-//        Intent intent = new Intent(this, DetailActivity.class);
-//        intent.putExtra("photo", clickedPhoto);
-//        startActivity(intent);
-//    }
+
     @Override
     public void onItemClick(Photo photo) {
         if (photo != null && photo.getUrls()!=null) {
@@ -171,6 +189,10 @@ public class PhotoSearchActivity extends AppCompatActivity implements PhotoAdapt
                 description = photo.getAlt_description(); // 대체 설명 사용
             }
             intent.putExtra("PHOTO_DESCRIPTION", description);
+
+            String id=photo.getId();
+            intent.putExtra("PHOTO_ID",id);
+
             startActivity(intent);
         } else {
             Toast.makeText(this, "사진을 불러오는 중입니다.", Toast.LENGTH_SHORT).show();
