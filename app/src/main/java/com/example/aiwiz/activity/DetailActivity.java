@@ -23,9 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.aiwiz.AppDatabase;
-import com.example.aiwiz.LikedPhotoDao;
-import com.example.aiwiz.LikedPhoto;
+import com.example.aiwiz.db.AppDatabase;
+import com.example.aiwiz.entity.LikedPhotoDao;
+import com.example.aiwiz.entity.LikedPhoto;
 import com.example.aiwiz.R;
 
 import androidx.core.app.ActivityCompat;
@@ -37,6 +37,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -53,6 +55,8 @@ public class DetailActivity extends AppCompatActivity {
 
     private AppDatabase db;
     private LikedPhotoDao likedPhotoDao;
+
+    private ExecutorService executorService;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -104,6 +108,14 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (executorService != null && !executorService.isShutdown()) {
+            executorService.shutdown(); // ExecutorService 종료
+        }
+    }
+
     /**
      * 좋아요 버튼의 상태를 업데이트합니다.
      */
@@ -132,6 +144,7 @@ public class DetailActivity extends AppCompatActivity {
             likeButton.setImageResource(R.drawable.heartfilled);
             Toast.makeText(this, "좋아요 추가", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     /**

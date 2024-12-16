@@ -16,11 +16,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AiWiz"
+        android:theme="@style/Base.Theme.AiWiz"
         tools:targetApi="31">
-        <activity android:name=".activity.PhotoSearchActivity"></activity>
-        <activity android:name=".activity.DetailActivity"></activity>
-        <activity android:name=".activity.LikedPhotosActivity"></activity>
+        <activity android:name=".activity.PhotoSearchActivity" />
+        <activity
+            android:name=".activity.DetailActivity"
+            android:theme="@style/CustomDialogTheme"/>
+        <activity android:name=".activity.LikedPhotosActivity" />
+        <activity android:name=".activity.AiImageActivity" />
         <activity
             android:name=".activity.MainActivity"
             android:exported="true">

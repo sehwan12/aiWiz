@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView imgPhotoSearch;
     private ImageView imgLikes;
+    private ImageView imgAiImage;
     // 다른 ImageView들은 추후에 추가할 수 있습니다.
 
     @Override
@@ -36,6 +37,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, LikedPhotosActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        imgAiImage=findViewById(R.id.imgAIImageGenerate);
+        imgAiImage.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AiImageActivity.class);
                 startActivity(intent);
             }
         });

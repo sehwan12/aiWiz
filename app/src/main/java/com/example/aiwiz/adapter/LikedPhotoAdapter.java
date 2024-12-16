@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.aiwiz.LikedPhoto;
+import com.example.aiwiz.entity.LikedPhoto;
 import com.example.aiwiz.R;
 import com.example.aiwiz.activity.DetailActivity;
 

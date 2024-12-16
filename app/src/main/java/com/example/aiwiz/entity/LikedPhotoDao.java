@@ -1,6 +1,6 @@
 // LikedPhotoDao.java
 
-package com.example.aiwiz;
+package com.example.aiwiz.entity;
 
 import androidx.room.Dao;
 import androidx.room.Insert;

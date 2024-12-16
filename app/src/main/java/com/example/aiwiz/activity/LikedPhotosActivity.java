@@ -1,6 +1,5 @@
 package com.example.aiwiz.activity;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,12 +8,11 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.example.aiwiz.AppDatabase;
-import com.example.aiwiz.LikedPhoto;
-import com.example.aiwiz.LikedPhotoDao;
+import com.example.aiwiz.db.AppDatabase;
+import com.example.aiwiz.entity.LikedPhoto;
+import com.example.aiwiz.entity.LikedPhotoDao;
 import com.example.aiwiz.R;
 import com.example.aiwiz.adapter.LikedPhotoAdapter;
-import com.example.aiwiz.adapter.PhotoAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

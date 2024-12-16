@@ -1,6 +1,6 @@
 // LikedPhoto.java
 
-package com.example.aiwiz;
+package com.example.aiwiz.entity;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

@@ -10,7 +10,6 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -26,7 +25,7 @@ import com.example.aiwiz.BuildConfig;
 import com.example.aiwiz.Photo;
 import com.example.aiwiz.R;
 import com.example.aiwiz.SearchResponse;
-import com.example.aiwiz.UnsplashApi;
+import com.example.aiwiz.api.UnsplashApi;
 import com.example.aiwiz.adapter.PhotoAdapter;
 
 import java.util.ArrayList;
