@@ -72,7 +72,7 @@ public class DetailActivity extends AppCompatActivity {
         //데이터베이스 초기화
         db = AppDatabase.getDatabase(this);
         likedPhotoDao = db.likedPhotoDao();
-
+        likedPhotoDao.deleteNullPhotoIds();
 
         Intent intent = getIntent();
         photoUrl = getIntent().getStringExtra("PHOTO_URL");
@@ -121,9 +121,11 @@ public class DetailActivity extends AppCompatActivity {
      */
     private void updateLikeButton() {
         if (likedPhotoDao.getLikedPhotoById(photoId) != null) {
-            likeButton.setImageResource(R.drawable.heartfilled); // 채워진 하트 아이콘
+            likeButton.setImageResource(R.drawable.heartfilled);// 채워진 하트 아이콘
+            likeButton.setTag("liked");
         } else {
             likeButton.setImageResource(R.drawable.heartlinear); // 빈 하트 아이콘
+            likeButton.setTag("not_liked");
         }
     }
 
@@ -136,12 +138,14 @@ public class DetailActivity extends AppCompatActivity {
             // 이미 좋아요한 상태: 좋아요 취소
             likedPhotoDao.delete(likedPhoto);
             likeButton.setImageResource(R.drawable.heartlinear);
+            likeButton.setTag("not_liked");
             Toast.makeText(this, "좋아요 취소", Toast.LENGTH_SHORT).show();
         } else {
             // 좋아요하지 않은 상태: 좋아요 추가
             LikedPhoto newLikedPhoto = new LikedPhoto(photoId, photoUrl, photoDescription);
             likedPhotoDao.insert(newLikedPhoto);
             likeButton.setImageResource(R.drawable.heartfilled);
+            likeButton.setTag("liked");
             Toast.makeText(this, "좋아요 추가", Toast.LENGTH_SHORT).show();
         }
 

@@ -11,7 +11,7 @@ import java.util.List;
 public interface GeneratedImageDao {
 
     @Insert
-    void insert(GeneratedImage generatedImage);
+    long insert(GeneratedImage generatedImage);
 
     @Query("SELECT * FROM generated_images ORDER BY created_at DESC")
     List<GeneratedImage> getAllGeneratedImages();

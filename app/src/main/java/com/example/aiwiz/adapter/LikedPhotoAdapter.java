@@ -56,6 +56,7 @@ public class LikedPhotoAdapter extends RecyclerView.Adapter<LikedPhotoAdapter.Li
             Intent intent = new Intent(context, DetailActivity.class);
             intent.putExtra("PHOTO_URL", likedPhoto.getPhotoUrl());
             intent.putExtra("PHOTO_DESCRIPTION", likedPhoto.getDescription());
+            intent.putExtra("PHOTO_ID", likedPhoto.getPhotoId());
             context.startActivity(intent);
         });
     }

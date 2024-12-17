@@ -30,6 +30,8 @@ public abstract class AppDatabase extends RoomDatabase {
         public void migrate(SupportSQLiteDatabase database) {
             // 새로운 테이블 생성
             database.execSQL("CREATE TABLE IF NOT EXISTS `generated_images` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `image_data` BLOB, `description` TEXT, `created_at` INTEGER)");
+            // photoId가 NULL인 행 삭제
+            database.execSQL("DELETE FROM liked_photos WHERE photoId IS NULL");
         }
     };
 

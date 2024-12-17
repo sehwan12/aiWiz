@@ -23,4 +23,8 @@ public interface LikedPhotoDao {
 
     @Query("SELECT * FROM liked_photos")
     List<LikedPhoto> getAllLikedPhotos();
+
+    // photoId가 NULL인 레코드 삭제
+    @Query("DELETE FROM liked_photos WHERE photoId IS NULL")
+    void deleteNullPhotoIds();
 }

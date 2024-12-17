@@ -10,6 +10,8 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +32,8 @@ import com.example.aiwiz.api.HuggingFaceApi;
 import com.example.aiwiz.api.RetrofitClient;
 
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,7 +46,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AiImageActivity extends AppCompatActivity {
+public class AiImageActivity extends AppCompatActivity implements DetailGeneratedImageDialog.OnImageDeletedListener{
 
     private Toolbar toolbar;
     private Button generateImageButton;
@@ -55,7 +59,7 @@ public class AiImageActivity extends AppCompatActivity {
     private ProgressBar progressBar;
 
     private static final int MAX_RETRIES = 3;
-    private static final long RETRY_DELAY_MS = 2000; // 2초
+    private int retryCount = 0;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -201,8 +205,7 @@ public class AiImageActivity extends AppCompatActivity {
                                     byte[] bitmapBytes = bitmapToByteArray(bitmap);
                                     // Room 데이터베이스에 저장
                                     saveGeneratedImage(bitmapBytes, prompt);
-                                    // 생성된 이미지를 표시
-                                    showGeneratedImage(bitmap);
+                                    retryCount=0;
                                 } else {
                                     Toast.makeText(AiImageActivity.this, "이미지 디코딩 실패.", Toast.LENGTH_SHORT).show();
                                     Log.e("AiImageActivity", "Bitmap 디코딩 실패.");
@@ -228,6 +231,32 @@ public class AiImageActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(AiImageActivity.this, "응답이 비어 있습니다.", Toast.LENGTH_LONG).show();
                         Log.e("AiImageActivity", "응답 바디가 null입니다.");
+                    }
+                } else if(response.code() == 503){
+                    // 모델 로딩 중 처리
+                    try {
+                        assert response.errorBody() != null;
+                        String errorBody = response.errorBody().string();
+                        JSONObject jsonObject = new JSONObject(errorBody);
+                        String error = jsonObject.getString("error");
+                        double estimatedTime = jsonObject.getDouble("estimated_time"); // 초 단위
+
+                        Toast.makeText(AiImageActivity.this, "모델이 로딩 중입니다. 잠시 후 다시 시도해주세요.", Toast.LENGTH_LONG).show();
+                        Log.e("AiImageActivity", "모델 로딩 중: " + error + ", 예상 대기 시간: " + estimatedTime + "초");
+
+                        if (retryCount < MAX_RETRIES) {
+                            retryCount++;
+                            retryAfterDelay(prompt, (long) (estimatedTime * 1000));
+                        } else {
+                            Toast.makeText(AiImageActivity.this, "이미지 생성 실패: 최대 재시도 횟수 초과", Toast.LENGTH_LONG).show();
+                            Log.e("AiImageActivity", "최대 재시도 횟수 초과");
+                            retryCount = 0;
+                        }
+
+
+                    } catch (Exception e) {
+                        Toast.makeText(AiImageActivity.this, "오류 응답을 처리하는 중 문제가 발생했습니다.", Toast.LENGTH_SHORT).show();
+                        Log.e("AiImageActivity", "오류 응답 처리 오류", e);
                     }
                 } else {
                     Toast.makeText(AiImageActivity.this, "이미지 생성 실패: " + response.message(), Toast.LENGTH_LONG).show();
@@ -269,30 +298,49 @@ public class AiImageActivity extends AppCompatActivity {
             @Override
             public void run() {
                 GeneratedImage generatedImage = new GeneratedImage(imageData, description, new Date());
-                generatedImageDao.insert(generatedImage);
+                long id=generatedImageDao.insert(generatedImage);
+                generatedImage.setId((int) id);
+
+                runOnUiThread(()->{
+                    showGeneratedImage(generatedImage.getId());
+                });
                 Log.d("AiImageActivity", "이미지 데이터베이스에 저장 완료.");
             }
         });
     }
 
     /**
-     * Base64 디코딩된 Bitmap 이미지를 표시하는 메서드
+     * GeneratedImage ID를 받아 DetailGeneratedImageDialog를 표시하는 메서드
      */
-    private void showGeneratedImage(Bitmap bitmap) {
-        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_generated_image, null);
-        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) ImageView generatedImageView = dialogView.findViewById(R.id.generatedImageView);
-        generatedImageView.setImageBitmap(bitmap);
-        builder.setView(dialogView)
-                .setPositiveButton("닫기", null)
-                .create()
-                .show();
+    private void showGeneratedImage(int generatedImageId) {
+        DetailGeneratedImageDialog dialog = new DetailGeneratedImageDialog();
+        Bundle bundle = new Bundle();
+        bundle.putInt("GENERATED_IMAGE_ID", generatedImageId);
+        dialog.setArguments(bundle);
+        dialog.show(getSupportFragmentManager(), "DetailGeneratedImageDialog");
     }
-
 
     @Override
     public boolean onSupportNavigateUp() {
         finish(); // 뒤로 가기
         return true;
     }
+
+    /**
+     * 삭제 완료 후 RecyclerView를 갱신하기 위한 인터페이스 메서드 구현
+     */
+    @Override
+    public void onImageDeleted() {
+        // 이미지가 삭제되었으므로 RecyclerView를 갱신
+        loadLikedPhotos();
+        Toast.makeText(this, "삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * 일정 시간 후 재시도하는 메서드
+     */
+    private void retryAfterDelay(String prompt, long delayMillis) {
+        new Handler(Looper.getMainLooper()).postDelayed(() -> generateAiImage(prompt), delayMillis);
+    }
+
 }

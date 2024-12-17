@@ -24,6 +24,7 @@
             android:theme="@style/CustomDialogTheme"/>
         <activity android:name=".activity.LikedPhotosActivity" />
         <activity android:name=".activity.AiImageActivity" />
+        <activity android:name=".activity.AiListActivity" />
         <activity
             android:name=".activity.MainActivity"
             android:exported="true">
