@@ -1,6 +1,6 @@
 # AIwiz
 
-![AIwiz 로고](/Users/bagsehwan/Desktop/과제/newmagician.png) 
+![newmagician](https://github.com/user-attachments/assets/1fef5507-98e6-4ab4-884a-c06ca83ddfca)
 
 AIwiz는 AI 기술을 활용하여 사진 선택만으로 사용자가 원하는 AI이미지를 생성시켜주는 서비스입니다. 
 
@@ -106,10 +106,11 @@ AIwiz는 다음과 같은 외부 API를 활용하여 기능을 구현합니다.
 
 ### 스크린샷
 -초기 화면
-![메인 페이지](/Users/bagsehwan/Desktop/Screenshot_20241218_023807.png)
+![Screenshot_20241218_023807](https://github.com/user-attachments/assets/d471311e-1ab9-43c4-bccf-40de13a04958)
 
 -사진 검색 화면
-![사진 검색 페이지](/Users/bagsehwan/Desktop/Screenshot_20241218_024304.png)
+![Screenshot_20241218_024304](https://github.com/user-attachments/assets/549a4587-4763-4932-b12d-af4f6895859c)
 
 -생성된 AI 이미지
-![ai 이미지](/Users/bagsehwan/Desktop/Screenshot_20241218_024413.png)
+![Screenshot_20241218_024413](https://github.com/user-attachments/assets/a4aeafb3-43a2-4be9-8c76-15b8a62661b7)
+
