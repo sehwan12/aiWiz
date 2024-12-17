@@ -106,10 +106,16 @@ AIwiz는 다음과 같은 외부 API를 활용하여 기능을 구현합니다.
 
 ### 스크린샷
 -초기 화면
-<img src="ttps://github.com/user-attachments/assets/d471311e-1ab9-43c4-bccf-40de13a04958" width="200" height="400" />
+
+
+<img src="https://github.com/user-attachments/assets/d471311e-1ab9-43c4-bccf-40de13a04958" width="200" height="400" />
 
 -사진 검색 화면
+
+
 <img src="https://github.com/user-attachments/assets/549a4587-4763-4932-b12d-af4f6895859c" width="200" height="400" />
 
 -생성된 AI 이미지
+
+
 <img src="https://github.com/user-attachments/assets/a4aeafb3-43a2-4be9-8c76-15b8a62661b7" width="200" height="400" />
