@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="412dp"
     android:layout_height="917dp"
-    android:background="#FFFFFF">
+    android:background="@color/white">
 
     <!-- Header Line -->
     <View
@@ -20,6 +20,7 @@
     <!-- Title: AI Wiz🧙‍♂️🪄 -->
 
     <!-- Photo Search Image -->
+
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
@@ -144,10 +145,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/labelAIImageGenerate" />
 
-
-    <!-- Help Image -->
-
-    <!-- Help Label -->
 
     <TextView
         android:id="@+id/labelAiVideo"

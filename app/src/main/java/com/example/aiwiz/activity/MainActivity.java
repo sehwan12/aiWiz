@@ -4,7 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-
+import androidx.core.splashscreen.SplashScreen;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.aiwiz.R;
@@ -15,10 +16,12 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imgLikes;
     private ImageView imgAiImage;
     private ImageView imgAiList;
-    // 다른 ImageView들은 추후에 추가할 수 있습니다.
+    private ImageView imgAiVideo;
+    private ImageView imgHelp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SplashScreen splashScreen=SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -60,6 +63,38 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 다른 ImageView들도 필요 시 클릭 리스너를 추가하세요.
+        imgAiVideo=findViewById(R.id.aiVideo);
+        imgAiVideo.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                showComingSoonDialog();
+            }
+        });
+
+        imgHelp=findViewById(R.id.imgHelp);
+        imgHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showHelpDialog();
+            }
+        });
+    }
+
+    // 다이얼로그 표시 함수
+    private void showComingSoonDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("기능 준비 중")
+                .setMessage("앞으로 추가될 기능입니다. 많은 기대 부탁드려요~")
+                .setPositiveButton("확인", (dialog, which) -> dialog.dismiss())
+                .create()
+                .show();
+    }
+
+    /**
+     * 도움말 다이얼로그 표시 메서드
+     */
+    private void showHelpDialog() {
+        HelpDialogFragment helpDialog = HelpDialogFragment.newInstance();
+        helpDialog.show(getSupportFragmentManager(), "HelpDialogFragment");
     }
 }

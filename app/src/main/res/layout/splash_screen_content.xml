@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- 스플래시 이미지 -->
+    <ImageView
+        android:id="@+id/splashImage"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/newmagician"
+        android:scaleType="centerCrop" /> <!-- 커스텀 모양 적용 -->
+
+    <!-- 이미지 아래 텍스트 -->
+    <TextView
+        android:id="@+id/splashText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ai_wiz"
+        android:fontFamily="@font/jollylodger"
+        android:textSize="48sp"
+        android:textColor="@color/khaki"
+        android:layout_marginTop="16dp" />
+</LinearLayout>

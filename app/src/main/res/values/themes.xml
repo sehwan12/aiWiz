@@ -20,7 +20,15 @@
         <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
     </style>
 
-
+    <!-- 스플래시 테마 -->
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <!-- 스플래시 이미지 설정 -->
+        <item name="android:windowSplashscreenContent">@layout/splash_screen_content</item>
+        <!-- 스플래시 화면의 배경 색상 -->
+        <item name="windowSplashScreenBackground">#AE8973</item>
+        <!-- 스플래시 화면 유지 시간 (선택 사항) -->
+        <item name="postSplashScreenTheme">@style/Base.Theme.AiWiz</item>
+    </style>
 
 
 </resources>
