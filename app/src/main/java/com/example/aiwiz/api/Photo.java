@@ -1,4 +1,4 @@
-package com.example.aiwiz;
+package com.example.aiwiz.api;
 
 // Photo.java
 

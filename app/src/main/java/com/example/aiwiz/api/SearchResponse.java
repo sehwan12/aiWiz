@@ -1,4 +1,4 @@
-package com.example.aiwiz;
+package com.example.aiwiz.api;
 
 // SearchResponse.java
 

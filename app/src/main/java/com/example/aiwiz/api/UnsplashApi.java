@@ -1,9 +1,6 @@
 package com.example.aiwiz.api;
 
 
-import com.example.aiwiz.Photo;
-import com.example.aiwiz.SearchResponse;
-
 import java.util.List;
 
 import retrofit2.Call;

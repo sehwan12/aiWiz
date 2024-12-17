@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.aiwiz.Photo;
+import com.example.aiwiz.api.Photo;
 import com.example.aiwiz.R;
 
 import java.util.List;

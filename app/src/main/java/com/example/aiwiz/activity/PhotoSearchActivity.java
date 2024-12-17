@@ -22,9 +22,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.aiwiz.BuildConfig;
-import com.example.aiwiz.Photo;
+import com.example.aiwiz.api.Photo;
 import com.example.aiwiz.R;
-import com.example.aiwiz.SearchResponse;
+import com.example.aiwiz.api.SearchResponse;
 import com.example.aiwiz.api.UnsplashApi;
 import com.example.aiwiz.adapter.PhotoAdapter;
 
