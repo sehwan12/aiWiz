@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aiwiz.db.AppDatabase;
@@ -50,6 +52,7 @@ public class AiImageActivity extends AppCompatActivity implements DetailGenerate
 
     private Toolbar toolbar;
     private Button generateImageButton;
+    private TextView retryCountdownTextView;
     private RecyclerView recyclerView;
     private AiImageAdapter aiImageAdapter;
     private AppDatabase db;
@@ -61,11 +64,14 @@ public class AiImageActivity extends AppCompatActivity implements DetailGenerate
     private static final int MAX_RETRIES = 3;
     private int retryCount = 0;
 
+    private CountDownTimer countDownTimer;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aiimage);
+        retryCountdownTextView=findViewById(R.id.retryCountdownTextView);
 
         // Toolbar 설정
         toolbar = findViewById(R.id.aiImageToolbar);
@@ -108,6 +114,16 @@ public class AiImageActivity extends AppCompatActivity implements DetailGenerate
     protected void onResume() {
         super.onResume();
         loadLikedPhotos();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // CountDownTimer 취소하여 메모리 누수 방지
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            countDownTimer = null;
+        }
     }
 
     private void loadLikedPhotos() {
@@ -205,7 +221,9 @@ public class AiImageActivity extends AppCompatActivity implements DetailGenerate
                                     byte[] bitmapBytes = bitmapToByteArray(bitmap);
                                     // Room 데이터베이스에 저장
                                     saveGeneratedImage(bitmapBytes, prompt);
+                                    //성공 시 retryCount 초기화 및 카운트다운 숨기기
                                     retryCount=0;
+                                    hideRetryCountdown();
                                 } else {
                                     Toast.makeText(AiImageActivity.this, "이미지 디코딩 실패.", Toast.LENGTH_SHORT).show();
                                     Log.e("AiImageActivity", "Bitmap 디코딩 실패.");
@@ -234,25 +252,25 @@ public class AiImageActivity extends AppCompatActivity implements DetailGenerate
                     }
                 } else if(response.code() == 503){
                     // 모델 로딩 중 처리
+                    ResponseBody errorbody=response.errorBody();
                     try {
-                        assert response.errorBody() != null;
-                        String errorBody = response.errorBody().string();
-                        JSONObject jsonObject = new JSONObject(errorBody);
-                        String error = jsonObject.getString("error");
-                        double estimatedTime = jsonObject.getDouble("estimated_time"); // 초 단위
+                        //assert response.errorBody() != null;
+                        if(errorbody!=null){
+                            String errorBody = response.errorBody().string();
+                            JSONObject jsonObject = new JSONObject(errorBody);
+                            String error = jsonObject.optString("error", "서비스 이용 불가");
+                            double estimatedTimeDouble = jsonObject.getDouble("estimated_time");// 초 단위
+                            long estimatedTime=(long) estimatedTimeDouble;
 
-                        Toast.makeText(AiImageActivity.this, "모델이 로딩 중입니다. 잠시 후 다시 시도해주세요.", Toast.LENGTH_LONG).show();
-                        Log.e("AiImageActivity", "모델 로딩 중: " + error + ", 예상 대기 시간: " + estimatedTime + "초");
+                            //카운트다운 시작
+                            startRetryCountdown(estimatedTime, prompt);
+                            Toast.makeText(AiImageActivity.this, "모델이 로딩 중입니다. 잠시 후 다시 시도해주세요.", Toast.LENGTH_LONG).show();
+                            Log.e("AiImageActivity", "모델 로딩 중: " + error + ", 예상 대기 시간: " + estimatedTime + "초");
 
-                        if (retryCount < MAX_RETRIES) {
-                            retryCount++;
-                            retryAfterDelay(prompt, (long) (estimatedTime * 1000));
-                        } else {
-                            Toast.makeText(AiImageActivity.this, "이미지 생성 실패: 최대 재시도 횟수 초과", Toast.LENGTH_LONG).show();
-                            Log.e("AiImageActivity", "최대 재시도 횟수 초과");
-                            retryCount = 0;
+                        }else{
+                            Toast.makeText(AiImageActivity.this, "서비스 이용 불가. 나중에 다시 시도해주세요.", Toast.LENGTH_LONG).show();
+                            Log.e("AiImageActivity", "ErrorBody가 null입니다.");
                         }
-
 
                     } catch (Exception e) {
                         Toast.makeText(AiImageActivity.this, "오류 응답을 처리하는 중 문제가 발생했습니다.", Toast.LENGTH_SHORT).show();
@@ -336,11 +354,45 @@ public class AiImageActivity extends AppCompatActivity implements DetailGenerate
         Toast.makeText(this, "삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
-    /**
-     * 일정 시간 후 재시도하는 메서드
-     */
-    private void retryAfterDelay(String prompt, long delayMillis) {
-        new Handler(Looper.getMainLooper()).postDelayed(() -> generateAiImage(prompt), delayMillis);
+    private void hideRetryCountdown() {
+        retryCountdownTextView.setVisibility(View.GONE);
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            countDownTimer = null;
+        }
+    }
+
+    private void startRetryCountdown(long seconds, String prompt) {
+        // TextView 표시 및 초기 텍스트 설정
+        retryCountdownTextView.setVisibility(View.VISIBLE);
+        retryCountdownTextView.setText("서비스가 일시적으로 이용 불가합니다.\n " + seconds + "초 후에 재시도됩니다.");
+
+        // 기존 카운트다운 타이머가 있으면 취소
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+
+        // 새로운 카운트다운 타이머 시작
+        countDownTimer = new CountDownTimer(seconds * 1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                long remainingSeconds = millisUntilFinished / 1000;
+                retryCountdownTextView.setText("서비스가 일시적으로 이용 불가합니다.\n " + remainingSeconds + "초 후에 재시도됩니다.");
+            }
+
+            @Override
+            public void onFinish() {
+                retryCountdownTextView.setVisibility(View.GONE);
+                if (retryCount < MAX_RETRIES) {
+                    retryCount++;
+                    generateAiImage(prompt);
+                } else {
+                    Toast.makeText(AiImageActivity.this, "이미지 생성 실패: 최대 재시도 횟수 초과", Toast.LENGTH_LONG).show();
+                    Log.e("AiImageActivity", "최대 재시도 횟수 초과");
+                    retryCount = 0;
+                }
+            }
+        }.start();
     }
 
 }
