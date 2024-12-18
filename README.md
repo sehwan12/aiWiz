@@ -14,12 +14,10 @@ AIwiz는 AI 기술을 활용하여 사진 선택만으로 사용자가 원하는
 
 
 ## 특징
-
-- **도움말 다이얼로그**: 도움말 다이얼로그를 통해 상세한 사용 지침을 제공합니다.
+- **사진 갤러리**: 3x3 그리드 레이아웃으로 사진을 쉽게 탐색하고 선택할 수 있습니다.
 - **상세 페이지 제공**: 이미지를 누르면 상세 설명과 함께 다운로드, 좋아요 기능을 이용할 수 있습니다.
-- **사진 갤러리**: 3x3 그리드 레이아웃으로 좋아요한 사진을 쉽게 탐색하고 선택할 수 있습니다.
-- **반응형 UI**: 현대적이고 사용자 친화적인 인터페이스를 제공하는 Material Design 원칙에 기반한 UI 설계.
 - **AI 이미지 생성**: 사진 선택만으로 사용자만의 ai이미지를 생성할 수 있습니다.
+- **도움말 다이얼로그**: 도움말 다이얼로그를 통해 상세한 사용 지침을 제공합니다.
 - **에러 처리**: 네트워크 문제나 API 오류 시 유용한 메시지를 통해 사용자에게 정보를 제공합니다.
 
 ## 기술 스택
@@ -31,7 +29,6 @@ AIwiz는 다양한 최신 기술과 라이브러리를 활용하여 개발되었
 - **UI 컴포넌트**
     - [AppCompat](https://developer.android.com/jetpack/androidx/releases/appcompat): 안드로이드 UI 컴포넌트의 이전 버전과 호환성을 제공합니다.
     - [Material Components](https://material.io/develop/android): Material Design 컴포넌트(예: TabLayout, 버튼 등)를 구현합니다.
-    - [Activity KTX](https://developer.android.com/jetpack/androidx/releases/activity): 액티비티를 더 쉽게 개발할 수 있도록 Kotlin 확장 기능을 제공합니다.
     - [ConstraintLayout](https://developer.android.com/training/constraint-layout): 유연하고 효율적인 UI 레이아웃을 가능하게 합니다.
     - [RecyclerView](https://developer.android.com/jetpack/androidx/releases/recyclerview): 스크롤 가능한 리스트를 표시하는 데 사용됩니다.
     - [CardView](https://developer.android.com/jetpack/androidx/releases/cardview): 둥근 모서리와 그림자가 있는 카드 레이아웃 컨테이너를 제공합니다.
